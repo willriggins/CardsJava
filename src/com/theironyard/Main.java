@@ -1,5 +1,7 @@
 package com.theironyard;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.stream.Collectors;
 
@@ -49,13 +51,44 @@ public class Main {
         return suits.size() == 1;
     }
 
+//    static boolean isFourOfAKind(HashSet<Card> hand) {
+//        HashSet<Card.Rank> ranks = hand.stream()
+//                .map(card -> card.rank)
+//                .collect(Collectors.toCollection(HashSet<Card.Rank>::new));
+//        return ranks.size() == 1;
+//    }
+
+    // not sure if this is working?
+    static boolean isStraight(HashSet<Card> hand) {
+        ArrayList<Integer> ranks = hand.stream()
+                .map(card -> card.rank.ordinal())
+                .collect(Collectors.toCollection(ArrayList<Integer>::new));
+        Collections.sort(ranks);
+        HashSet<Integer> numRanks = new HashSet<>(ranks);
+        boolean straight = ranks.get(3) - ranks.get(0) == 3;
+        return straight;
+    }
+
     public static void main(String[] args) {
         HashSet<Card> deck = createDeck();
         HashSet<HashSet<Card>> hands = createHands(deck);
+
+        // create flushes
         HashSet<HashSet<Card>> flushes = hands.stream()
                 .filter(Main::isFlush)
                 .collect(Collectors.toCollection(HashSet<HashSet<Card>>::new));
 
-        System.out.println(flushes.size());
+        // create straights
+        HashSet<HashSet<Card>> straights = hands.stream()
+                .filter(Main::isStraight)
+                .collect(Collectors.toCollection(HashSet<HashSet<Card>>::new));
+
+        // create straight flush ? ans = 40?
+        HashSet<HashSet<Card>> straightFlushes = hands.stream()
+                .filter(Main::isFlush)
+                .filter(Main::isStraight)
+                .collect(Collectors.toCollection(HashSet<HashSet<Card>>::new));
+
+        System.out.println(straightFlushes.size());
     }
 }
