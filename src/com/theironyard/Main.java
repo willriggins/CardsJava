@@ -51,21 +51,46 @@ public class Main {
         return suits.size() == 1;
     }
 
-//    static boolean isFourOfAKind(HashSet<Card> hand) {
-//        HashSet<Card.Rank> ranks = hand.stream()
-//                .map(card -> card.rank)
-//                .collect(Collectors.toCollection(HashSet<Card.Rank>::new));
-//        return ranks.size() == 1;
-//    }
+    static boolean isFourOfAKind(HashSet<Card> hand) {
+        HashSet<Card.Rank> ranks = hand.stream()
+                .map(card -> card.rank)
+                .collect(Collectors.toCollection(HashSet<Card.Rank>::new));
+        return ranks.size() == 1;
+    }
 
-    // not sure if this is working?
+    // was this supposed to be a stream?
     static boolean isStraight(HashSet<Card> hand) {
-        ArrayList<Integer> ranks = hand.stream()
-                .map(card -> card.rank.ordinal())
-                .collect(Collectors.toCollection(ArrayList<Integer>::new));
-        Collections.sort(ranks);
-        HashSet<Integer> numRanks = new HashSet<>(ranks);
-        boolean straight = ranks.get(3) - ranks.get(0) == 3;
+        boolean straight = false;
+        if (hand.contains(Card.Rank.ACE) && hand.contains(Card.Rank.TWO) && hand.contains(Card.Rank.THREE) && hand.contains(Card.Rank.FOUR)) {
+            straight = true;
+        }
+        if (hand.contains(Card.Rank.TWO) && hand.contains(Card.Rank.THREE) && hand.contains(Card.Rank.FOUR) && hand.contains(Card.Rank.FIVE)) {
+            straight = true;
+        }
+        if (hand.contains(Card.Rank.THREE) && hand.contains(Card.Rank.FOUR) && hand.contains(Card.Rank.FIVE) && hand.contains(Card.Rank.SIX)) {
+            straight = true;
+        }
+        if (hand.contains(Card.Rank.FOUR) && hand.contains(Card.Rank.FIVE) && hand.contains(Card.Rank.SIX) && hand.contains(Card.Rank.SEVEN)) {
+            straight = true;
+        }
+        if (hand.contains(Card.Rank.FIVE) && hand.contains(Card.Rank.SIX) && hand.contains(Card.Rank.SEVEN) && hand.contains(Card.Rank.EIGHT)) {
+            straight = true;
+        }
+        if (hand.contains(Card.Rank.SIX) && hand.contains(Card.Rank.SEVEN) && hand.contains(Card.Rank.EIGHT) && hand.contains(Card.Rank.NINE)) {
+            straight = true;
+        }
+        if (hand.contains(Card.Rank.SEVEN) && hand.contains(Card.Rank.EIGHT) && hand.contains(Card.Rank.NINE) && hand.contains(Card.Rank.TEN)) {
+            straight = true;
+        }
+        if (hand.contains(Card.Rank.EIGHT) && hand.contains(Card.Rank.NINE) && hand.contains(Card.Rank.TEN) && hand.contains(Card.Rank.JACK)) {
+            straight = true;
+        }
+        if (hand.contains(Card.Rank.NINE) && hand.contains(Card.Rank.TEN) && hand.contains(Card.Rank.JACK) && hand.contains(Card.Rank.QUEEN)) {
+            straight = true;
+        }
+        if (hand.contains(Card.Rank.TEN) && hand.contains(Card.Rank.JACK) && hand.contains(Card.Rank.QUEEN) && hand.contains(Card.Rank.KING)) {
+            straight = true;
+        }
         return straight;
     }
 
@@ -89,6 +114,13 @@ public class Main {
                 .filter(Main::isStraight)
                 .collect(Collectors.toCollection(HashSet<HashSet<Card>>::new));
 
-        System.out.println(straightFlushes.size());
+        // create 4 of a kind
+        HashSet<HashSet<Card>> fours = hands.stream()
+                .filter(Main::isFourOfAKind)
+                .collect(Collectors.toCollection(HashSet<HashSet<Card>>::new));
+
+
+
+        System.out.println(straights.size());
     }
 }
